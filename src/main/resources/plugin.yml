@@ -1,0 +1,13 @@
+name: CanineSMP
+version: '${project.version}'
+main: com.trxsh.caninesmp.Main
+api-version: 1.19
+authors: [ trxsh ]
+description: smp idea personally made by me
+commands:
+  locatedog:
+    description: locates a player's dog.
+    usage: /<command>
+  teleportdog:
+    description: teleports a player's dog to them.
+    usage: /<command>
