@@ -21,7 +21,7 @@ public class DogHealth implements CommandExecutor {
 
         }
 
-        if(command.getName().equalsIgnoreCase("teleportdog")) {
+        if(command.getName().equalsIgnoreCase("doghealth")) {
 
             Player p = (Player) sender;
 
@@ -36,10 +36,9 @@ public class DogHealth implements CommandExecutor {
 
                 }
 
-                w.teleport(p.getLocation());
-
-                p.sendMessage(ChatColor.GREEN + "Your Dog Has " + ChatColor.RED + "" + ChatColor.BOLD + "❤" + (w.getHealth() / 2) + ".");
+                p.sendMessage(ChatColor.GREEN + "Your Dog Has " + ChatColor.RED + "❤" + (w.getHealth() / 2));
                 return true;
+
             }
 
         }
