@@ -2,7 +2,6 @@ package com.trxsh.caninesmp.utility;
 
 import com.trxsh.caninesmp.data.DogList;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -14,7 +13,7 @@ public class IdentityUtility {
 
         for(UUID id1 : DogList.dogList.keySet())
             if(id.equals(id1))
-                return DogList.dogList.get(id1);
+                return Bukkit.getPlayer(DogList.dogList.get(id1));
 
         return null;
 
@@ -24,7 +23,7 @@ public class IdentityUtility {
 
         for(UUID id : DogList.dogList.keySet()) {
 
-            UUID playerID = DogList.dogList.get(id).getUniqueId();
+            UUID playerID = DogList.dogList.get(id);
 
             if(playerID.equals(player.getUniqueId()))
                 return id;
@@ -40,7 +39,7 @@ public class IdentityUtility {
         UUID id = null;
 
         for(UUID id1 : DogList.dogList.keySet())
-            if(DogList.dogList.get(id1).getUniqueId().equals(player.getUniqueId()))
+            if(DogList.dogList.get(id1).equals(player.getUniqueId()))
                 id = id1;
 
         if(id == null)
@@ -58,8 +57,8 @@ public class IdentityUtility {
 
     public static boolean dogOwnerExists(Player player) {
 
-        for(Player p : DogList.dogList.values())
-            if(p.getUniqueId().equals(player.getUniqueId()))
+        for(UUID id : DogList.dogList.values())
+            if(id.equals(player.getUniqueId()))
                 return true;
 
         return false;

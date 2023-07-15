@@ -26,6 +26,7 @@ public class BanFileManager extends FileManager {
             sb.append(id.toString() + NameUtility.getSeparator());
 
         writer.write(sb.toString());
+        writer.close();
 
     }
 

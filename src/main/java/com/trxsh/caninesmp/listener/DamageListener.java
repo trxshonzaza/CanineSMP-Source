@@ -24,6 +24,7 @@ public class DamageListener implements Listener {
 
                 if(p == null) {
 
+                    Bukkit.broadcastMessage("player not identified");
                     return;
 
                 }

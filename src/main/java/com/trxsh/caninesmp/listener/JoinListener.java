@@ -18,8 +18,7 @@ public class JoinListener implements Listener {
         else
             p = PlayerList.players.get(e.getPlayer().getUniqueId());
 
-        if(!p.isOnline)
-            p.setData(e.getPlayer(), true);
+        p.setData(e.getPlayer(), true);
 
         if(p.getDogEntity() == null)
             p.spawnPersonalDog();

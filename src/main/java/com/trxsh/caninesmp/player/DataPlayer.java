@@ -101,12 +101,8 @@ public class DataPlayer {
         if(!isOnline)
             return;
 
-        if(dogEntity != null) {
-
-            DogList.remove(dogEntity.getUniqueId());
+        if(dogEntity != null)
             dogEntity.remove();
-
-        }
 
         if(IdentityUtility.dogOwnerExists(player))
             DogList.remove(IdentityUtility.getDogByPlayer(player));
@@ -117,10 +113,9 @@ public class DataPlayer {
         dog.setCustomName(ChatColor.GOLD + "" + ChatColor.BOLD + player.getName() + "'s Dog");
 
         this.dogEntity = dog;
-
         this.dogUUID = dog.getUniqueId();
 
-        DogList.add(dog.getUniqueId(), player);
+        DogList.add(dog.getUniqueId(), player.getUniqueId());
 
     }
 

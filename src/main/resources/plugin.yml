@@ -11,3 +11,6 @@ commands:
   teleportdog:
     description: teleports a player's dog to them.
     usage: /<command>
+  doghealth:
+    description: shows a player their dog's health.
+    usage: /<command>

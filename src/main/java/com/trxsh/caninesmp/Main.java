@@ -1,9 +1,12 @@
 package com.trxsh.caninesmp;
 
+import com.trxsh.caninesmp.command.DogHealth;
 import com.trxsh.caninesmp.command.DogLocation;
 import com.trxsh.caninesmp.command.DogTeleport;
+import com.trxsh.caninesmp.data.DogList;
 import com.trxsh.caninesmp.data.PlayerList;
 import com.trxsh.caninesmp.data.file.FileManager;
+import com.trxsh.caninesmp.data.file.managers.BanFileManager;
 import com.trxsh.caninesmp.data.file.managers.PlayerFileManager;
 import com.trxsh.caninesmp.listener.DamageListener;
 import com.trxsh.caninesmp.listener.DeathListener;
@@ -36,9 +39,10 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getPluginCommand("locatedog").setExecutor(new DogLocation());
         Bukkit.getPluginCommand("teleportdog").setExecutor(new DogTeleport());
+        Bukkit.getPluginCommand("doghealth").setExecutor(new DogHealth());
 
         p = new PlayerFileManager(new File("players.sav"));
-        b = new PlayerFileManager(new File("banned.sav"));
+        b = new BanFileManager(new File("banned.sav"));
 
         try {
 
@@ -69,8 +73,7 @@ public final class Main extends JavaPlugin {
             else
                 dp = PlayerList.players.get(p.getUniqueId());
 
-            if(!dp.isOnline)
-                dp.setData(p, true);
+            dp.setData(p, true);
 
             if(dp.getDogEntity() == null)
                 dp.spawnPersonalDog();
@@ -93,7 +96,7 @@ public final class Main extends JavaPlugin {
             Bukkit.getLogger().info("Saving Data (prod trxsh 2.0#1988)");
 
             p = new PlayerFileManager(new File("players.sav"));
-            b = new PlayerFileManager(new File("banned.sav"));
+            b = new BanFileManager(new File("banned.sav"));
 
             b.save();
             p.save();
@@ -107,6 +110,10 @@ public final class Main extends JavaPlugin {
             e.printStackTrace();
 
         }
+
+        for(DataPlayer p : PlayerList.players.values())
+            if(p.getDogEntity() != null)
+                p.getDogEntity().remove();
 
         Bukkit.getLogger().info("Disabled Plugin (prod trxsh 2.0#1988)");
 

@@ -1,5 +1,6 @@
 package com.trxsh.caninesmp.data;
 
+import com.trxsh.caninesmp.player.DataPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -8,11 +9,11 @@ import java.util.UUID;
 
 public class DogList {
 
-    public static Map<UUID, Player> dogList = new HashMap();
+    public static Map<UUID, UUID> dogList = new HashMap();
 
-    public static void add(UUID dogID, Player player) {
+    public static void add(UUID dogID, UUID playerID) {
 
-        dogList.put(dogID, player);
+        dogList.put(dogID, playerID);
 
     }
 
@@ -30,25 +31,25 @@ public class DogList {
 
     public static boolean playerExists(UUID playerID) {
 
-        for(Player player : dogList.values())
-            if(player.getUniqueId().equals(playerID))
+        for(UUID id : dogList.values())
+            if(id.equals(playerID))
                 return true;
 
         return false;
 
     }
 
-    public static void replace(UUID dogID, Player player) {
+    public static void replace(UUID dogID, UUID playerID) {
 
-        if(playerExists(player.getUniqueId())) {
+        if(playerExists(playerID)) {
 
             for(UUID id : dogList.keySet())
-                if(player.getUniqueId().equals(dogList.get(id).getUniqueId()))
+                if(playerID.equals(dogList.get(id)))
                     dogList.remove(id, dogList.get(id));
 
         }
 
-        dogList.put(dogID, player);
+        dogList.put(dogID, playerID);
 
     }
 
