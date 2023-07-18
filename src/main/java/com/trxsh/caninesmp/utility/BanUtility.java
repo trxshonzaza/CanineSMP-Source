@@ -1,10 +1,10 @@
 package com.trxsh.caninesmp.utility;
 
 import com.trxsh.caninesmp.data.BanList;
+import org.bukkit.BanEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -28,6 +28,12 @@ public class BanUtility {
         OfflinePlayer p = Bukkit.getOfflinePlayer(id);
 
         Bukkit.getBanList(org.bukkit.BanList.Type.NAME).pardon(Objects.requireNonNull(p.getName()));
+
+    }
+
+    public static BanEntry getBanEntry(UUID id) {
+
+        return Bukkit.getBanList(org.bukkit.BanList.Type.NAME).getBanEntry(Objects.requireNonNull(Bukkit.getOfflinePlayer(id).getName()));
 
     }
 

@@ -22,12 +22,8 @@ public class DamageListener implements Listener {
 
                 Player p = IdentityUtility.identifyDogOwner(w.getUniqueId());
 
-                if(p == null) {
-
-                    Bukkit.broadcastMessage("player not identified");
+                if(p == null)
                     return;
-
-                }
 
                 p.damage(e.getDamage());
                 p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Your Dog Took Damage!");
