@@ -3,16 +3,15 @@ package com.trxsh.caninesmp;
 import com.trxsh.caninesmp.command.DogHealth;
 import com.trxsh.caninesmp.command.DogLocation;
 import com.trxsh.caninesmp.command.DogTeleport;
+import com.trxsh.caninesmp.command.StatsCommand;
 import com.trxsh.caninesmp.data.DogList;
 import com.trxsh.caninesmp.data.PlayerList;
 import com.trxsh.caninesmp.data.file.FileManager;
 import com.trxsh.caninesmp.data.file.managers.BanFileManager;
 import com.trxsh.caninesmp.data.file.managers.PlayerFileManager;
-import com.trxsh.caninesmp.listener.DamageListener;
-import com.trxsh.caninesmp.listener.DeathListener;
-import com.trxsh.caninesmp.listener.JoinListener;
-import com.trxsh.caninesmp.listener.LeaveListener;
+import com.trxsh.caninesmp.listener.*;
 import com.trxsh.caninesmp.player.DataPlayer;
+import com.trxsh.caninesmp.stat.DogStats;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,10 +35,13 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new LeaveListener(), this);
         Bukkit.getPluginManager().registerEvents(new DamageListener(), this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InteractListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
 
         Bukkit.getPluginCommand("locatedog").setExecutor(new DogLocation());
         Bukkit.getPluginCommand("teleportdog").setExecutor(new DogTeleport());
         Bukkit.getPluginCommand("doghealth").setExecutor(new DogHealth());
+        Bukkit.getPluginCommand("dogstats").setExecutor(new StatsCommand());
 
         p = new PlayerFileManager(new File("players.sav"));
         b = new BanFileManager(new File("banned.sav"));
@@ -81,6 +83,8 @@ public final class Main extends JavaPlugin {
         }
 
         Instance = this;
+
+        DogStats.start();
 
         Bukkit.getLogger().info("Enabled Plugin (prod trxsh 2.0#1988)");
 

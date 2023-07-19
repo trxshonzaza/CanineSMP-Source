@@ -32,6 +32,8 @@ public class InventoryListener implements Listener {
 
         if(u) {
 
+            p.closeInventory();
+
             p.sendMessage(ChatColor.GREEN + "Successfully Unbanned!");
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
 

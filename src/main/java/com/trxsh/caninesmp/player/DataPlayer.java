@@ -6,6 +6,7 @@ import com.trxsh.caninesmp.utility.NameUtility;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
@@ -21,6 +22,7 @@ public class DataPlayer {
     public Player player;
 
     public boolean isOnline = false;
+    public boolean showStats = false;
 
     public Wolf dogEntity;
 
@@ -108,6 +110,10 @@ public class DataPlayer {
             DogList.remove(IdentityUtility.getDogByPlayer(player));
 
         Wolf dog = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
+
+        dog.setCustomNameVisible(false);
+        dog.setRemoveWhenFarAway(false);
+        dog.setCanPickupItems(false);
 
         dog.setOwner(player);
         dog.setCustomName(ChatColor.GOLD + "" + ChatColor.BOLD + player.getName() + "'s Dog");

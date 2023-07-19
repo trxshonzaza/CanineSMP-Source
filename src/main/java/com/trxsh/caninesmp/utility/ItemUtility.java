@@ -6,9 +6,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import static com.trxsh.caninesmp.data.BanList.banned;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.UUID;
 
 public class ItemUtility {
 
@@ -50,6 +53,9 @@ public class ItemUtility {
         if(Bukkit.getBanList(BanList.Type.NAME).isBanned(Objects.requireNonNull(stack.getItemMeta()).getDisplayName())) {
 
             Bukkit.getBanList(BanList.Type.NAME).pardon(Objects.requireNonNull(stack.getItemMeta()).getDisplayName());
+
+            banned.removeIf(id -> Objects.requireNonNull(Bukkit.getOfflinePlayer(id).getName()).equalsIgnoreCase(Objects.requireNonNull(stack.getItemMeta()).getDisplayName()));
+
             return true;
 
         }
