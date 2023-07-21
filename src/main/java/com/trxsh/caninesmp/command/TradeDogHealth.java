@@ -1,15 +1,16 @@
 package com.trxsh.caninesmp.command;
 
-import com.trxsh.caninesmp.data.PlayerList;
 import com.trxsh.caninesmp.utility.IdentityUtility;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
-public class StatsCommand implements CommandExecutor {
+public class TradeDogHealth implements CommandExecutor {
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -21,7 +22,7 @@ public class StatsCommand implements CommandExecutor {
 
         }
 
-        if(command.getName().equalsIgnoreCase("dogstats")) {
+        if(command.getName().equalsIgnoreCase("tradedoghealth")) {
 
             Player p = (Player) sender;
 
@@ -36,21 +37,34 @@ public class StatsCommand implements CommandExecutor {
 
                 }
 
-                if(PlayerList.players.get(p.getUniqueId()).showStats) {
+                double healthNeeded = 20 - Math.round(p.getHealth());
 
-                    PlayerList.players.get(p.getUniqueId()).showStats = false;
+                if (healthNeeded <= 0) {
 
-                    p.sendMessage(ChatColor.GREEN + "Your Dog's Stats Are No Longer Showing.");
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You are at full health!");
+                    p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1f, .5f);
+
                     return true;
 
-                } else {
+                } else if (healthNeeded >= w.getHealth())
+                    healthNeeded = w.getHealth();
 
-                    PlayerList.players.get(p.getUniqueId()).showStats = true;
+                if (healthNeeded >= w.getHealth()) {
 
-                    p.sendMessage(ChatColor.GREEN + "Your Dog's Stats Are Now Showing.");
+                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Your dog does not have sufficient health!");
+                    p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1f, .5f);
+
                     return true;
 
-                }
+                } else
+                    w.setHealth(w.getHealth() - healthNeeded);
+
+                p.setHealth(Math.round(p.getHealth() + healthNeeded));
+
+                p.sendMessage(ChatColor.GREEN + "You took " + ChatColor.RED + "❤" + (healthNeeded / 2) + ChatColor.GREEN + " from your dog.");
+                p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+
+                return true;
 
             } else {
 
@@ -62,6 +76,7 @@ public class StatsCommand implements CommandExecutor {
         }
 
         return false;
+
     }
 
 }

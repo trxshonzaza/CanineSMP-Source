@@ -3,6 +3,7 @@ package com.trxsh.caninesmp.listener;
 import com.trxsh.caninesmp.utility.InventoryUtility;
 import com.trxsh.caninesmp.utility.ItemUtility;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,12 +16,12 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
 
-        if(!e.getInventory().equals(InventoryUtility.current))
+        if(e.getView().getTitle() != "Revive Menu")
             return;
 
         e.setCancelled(true);
 
-        if(e.getCurrentItem() == null)
+        if(e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR)
             return;
 
         if(!(e.getWhoClicked() instanceof Player))

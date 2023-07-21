@@ -40,6 +40,12 @@ public class DogTeleport implements CommandExecutor {
 
                 p.sendMessage(ChatColor.GREEN + "Your Dog Has Been Teleported To You.");
                 return true;
+
+            } else {
+
+                sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You Do Not Own A Dog Or It Is Not Registered! (re-login to fix.)");
+                return true;
+
             }
 
         }

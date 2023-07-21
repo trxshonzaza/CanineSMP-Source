@@ -57,7 +57,7 @@ public class DogLocation implements CommandExecutor {
                 p.sendMessage(ChatColor.GREEN + "Your Dog Is Located At " + (int)l.getX() + ", " + (int)l.getY() + ", " + (int)l.getZ() + " And Is In '" + dimension + "'.");
                 return true;
 
-            }else {
+            } else {
 
                 sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You Do Not Own A Dog Or It Is Not Registered! (re-login to fix.)");
                 return true;

@@ -39,6 +39,11 @@ public class DogHealth implements CommandExecutor {
                 p.sendMessage(ChatColor.GREEN + "Your Dog Has " + ChatColor.RED + "❤" + (w.getHealth() / 2));
                 return true;
 
+            } else {
+
+                sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You Do Not Own A Dog Or It Is Not Registered! (re-login to fix.)");
+                return true;
+
             }
 
         }

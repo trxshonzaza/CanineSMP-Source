@@ -14,3 +14,18 @@ commands:
   doghealth:
     description: shows a player their dog's health.
     usage: /<command>
+  dogstats:
+    description: shows a player this dog's stats on the scoreboard.
+    usage: /<command>
+  unbandataplayer:
+    description: unbans a player who was death-banned.
+    usage: /<command>
+  giverevivetoken:
+    description: gives a player a revive token.
+    usage: /<command>
+  tradedoghealth:
+    description: restores you to full health, but at the expense of your dog's health.
+    usage: /<command>
+  toggledog:
+    description: toggles your dog.
+    usage: /<command>

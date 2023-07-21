@@ -1,9 +1,9 @@
 package com.trxsh.caninesmp;
 
-import com.trxsh.caninesmp.command.DogHealth;
-import com.trxsh.caninesmp.command.DogLocation;
-import com.trxsh.caninesmp.command.DogTeleport;
-import com.trxsh.caninesmp.command.StatsCommand;
+import com.trxsh.caninesmp.command.*;
+import com.trxsh.caninesmp.command.operator.GiveReviveToken;
+import com.trxsh.caninesmp.command.operator.ToggleDog;
+import com.trxsh.caninesmp.command.operator.UnbanPlayer;
 import com.trxsh.caninesmp.data.DogList;
 import com.trxsh.caninesmp.data.PlayerList;
 import com.trxsh.caninesmp.data.file.FileManager;
@@ -42,6 +42,13 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginCommand("teleportdog").setExecutor(new DogTeleport());
         Bukkit.getPluginCommand("doghealth").setExecutor(new DogHealth());
         Bukkit.getPluginCommand("dogstats").setExecutor(new StatsCommand());
+        Bukkit.getPluginCommand("tradedoghealth").setExecutor(new TradeDogHealth());
+
+        // Operator Commands
+
+        Bukkit.getPluginCommand("unbandataplayer").setExecutor(new UnbanPlayer());
+        Bukkit.getPluginCommand("giverevivetoken").setExecutor(new GiveReviveToken());
+        Bukkit.getPluginCommand("toggledog").setExecutor(new ToggleDog());
 
         p = new PlayerFileManager(new File("players.sav"));
         b = new BanFileManager(new File("banned.sav"));
