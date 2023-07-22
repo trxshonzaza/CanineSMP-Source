@@ -1,5 +1,6 @@
 package com.trxsh.caninesmp.command;
 
+import com.trxsh.caninesmp.data.PlayerList;
 import com.trxsh.caninesmp.utility.IdentityUtility;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -34,7 +35,18 @@ public class DogLocation implements CommandExecutor {
 
                 if(w == null) {
 
-                    sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Your Dog Could Not Be Found (Is It In A Different Dimension?)");
+                    if(PlayerList.players.get(p.getUniqueId()).lastDogLocation != null) {
+
+                        Location l = PlayerList.players.get(p.getUniqueId()).lastDogLocation;
+
+                        p.sendMessage(ChatColor.GREEN + "Your Dog's Last Known Location Was At " + (int)l.getX() + ", " + (int)l.getY() + ", " + (int)l.getZ() + ".");
+
+                    } else {
+
+                        sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Your Dog Could Not Be Found (Is It In A Different Dimension?)");
+
+                    }
+
                     return true;
 
                 }

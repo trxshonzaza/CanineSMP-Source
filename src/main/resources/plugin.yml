@@ -29,3 +29,9 @@ commands:
   toggledog:
     description: toggles your dog.
     usage: /<command>
+  toggledogattack:
+    description: toggles atttacking of player's dogs.
+    usage: /<command>
+  stopattacking:
+    description: stops your dog from attacking the current target.
+    usage: /<command>

@@ -1,5 +1,6 @@
 package com.trxsh.caninesmp.listener;
 
+import com.trxsh.caninesmp.Main;
 import com.trxsh.caninesmp.utility.IdentityUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +16,13 @@ public class DamageListener implements Listener {
     public void onDamage(EntityDamageEvent e) {
 
         if(e.getEntity() instanceof Wolf) {
+
+            if(!Main.Instance.attackDogs) {
+
+                e.setCancelled(true);
+                return;
+
+            }
 
             Wolf w = (Wolf) e.getEntity();
 

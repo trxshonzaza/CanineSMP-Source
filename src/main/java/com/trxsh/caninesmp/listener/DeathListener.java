@@ -2,6 +2,7 @@ package com.trxsh.caninesmp.listener;
 
 import com.trxsh.caninesmp.data.DogList;
 import com.trxsh.caninesmp.data.PlayerList;
+import com.trxsh.caninesmp.player.DataPlayer;
 import com.trxsh.caninesmp.utility.BanUtility;
 import com.trxsh.caninesmp.utility.IdentityUtility;
 import com.trxsh.caninesmp.utility.ItemUtility;
@@ -29,6 +30,11 @@ public class DeathListener implements Listener {
                 DogList.remove(w.getUniqueId());
 
                 w.getWorld().dropItem(w.getLocation(), ItemUtility.getReviveItem());
+
+                DataPlayer player = PlayerList.players.get(p.getUniqueId());
+
+                player.lastDogLocation = null;
+                player.lastDimension = null;
 
 
                 assert p != null;

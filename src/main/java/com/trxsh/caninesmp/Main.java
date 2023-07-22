@@ -3,11 +3,13 @@ package com.trxsh.caninesmp;
 import com.trxsh.caninesmp.command.*;
 import com.trxsh.caninesmp.command.operator.GiveReviveToken;
 import com.trxsh.caninesmp.command.operator.ToggleDog;
+import com.trxsh.caninesmp.command.operator.ToggleDogAttack;
 import com.trxsh.caninesmp.command.operator.UnbanPlayer;
-import com.trxsh.caninesmp.data.DogList;
+import com.trxsh.caninesmp.crafting.CraftingRecipes;
 import com.trxsh.caninesmp.data.PlayerList;
 import com.trxsh.caninesmp.data.file.FileManager;
 import com.trxsh.caninesmp.data.file.managers.BanFileManager;
+import com.trxsh.caninesmp.data.file.managers.DogLocationFileManager;
 import com.trxsh.caninesmp.data.file.managers.PlayerFileManager;
 import com.trxsh.caninesmp.listener.*;
 import com.trxsh.caninesmp.player.DataPlayer;
@@ -25,6 +27,9 @@ public final class Main extends JavaPlugin {
 
     public static FileManager p;
     public static FileManager b;
+    public static FileManager dl;
+
+    public boolean attackDogs = true;
 
     @Override
     public void onEnable() {
@@ -43,15 +48,18 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginCommand("doghealth").setExecutor(new DogHealth());
         Bukkit.getPluginCommand("dogstats").setExecutor(new StatsCommand());
         Bukkit.getPluginCommand("tradedoghealth").setExecutor(new TradeDogHealth());
+        Bukkit.getPluginCommand("stopattacking").setExecutor(new StopAttacking());
 
         // Operator Commands
 
         Bukkit.getPluginCommand("unbandataplayer").setExecutor(new UnbanPlayer());
         Bukkit.getPluginCommand("giverevivetoken").setExecutor(new GiveReviveToken());
         Bukkit.getPluginCommand("toggledog").setExecutor(new ToggleDog());
+        Bukkit.getPluginCommand("toggledogattack").setExecutor(new ToggleDogAttack());
 
         p = new PlayerFileManager(new File("players.sav"));
         b = new BanFileManager(new File("banned.sav"));
+        dl = new DogLocationFileManager(new File("doglocation.sav"));
 
         try {
 
@@ -62,6 +70,9 @@ public final class Main extends JavaPlugin {
 
             if(b.exists())
                 b.load();
+
+            if(dl.exists())
+                dl.load();
 
             Bukkit.getLogger().info("Loaded! (prod trxsh 2.0#1988)");
 
@@ -91,6 +102,8 @@ public final class Main extends JavaPlugin {
 
         Instance = this;
 
+        CraftingRecipes.add();
+
         DogStats.start();
 
         Bukkit.getLogger().info("Enabled Plugin (prod trxsh 2.0#1988)");
@@ -108,9 +121,11 @@ public final class Main extends JavaPlugin {
 
             p = new PlayerFileManager(new File("players.sav"));
             b = new BanFileManager(new File("banned.sav"));
+            dl = new DogLocationFileManager(new File("doglocation.sav"));
 
             b.save();
             p.save();
+            dl.save();
 
             Bukkit.getLogger().info("Saved! (prod trxsh 2.0#1988)");
 
@@ -125,6 +140,8 @@ public final class Main extends JavaPlugin {
         for(DataPlayer p : PlayerList.players.values())
             if(p.getDogEntity() != null)
                 p.getDogEntity().remove();
+
+        CraftingRecipes.remove();
 
         Bukkit.getLogger().info("Disabled Plugin (prod trxsh 2.0#1988)");
 

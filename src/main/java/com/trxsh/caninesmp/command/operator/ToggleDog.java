@@ -62,17 +62,21 @@ public class ToggleDog implements CommandExecutor {
 
                     p.spawnPersonalDog();
                     sender.sendMessage(ChatColor.GREEN + "Your dog has been enabled.");
+                    return true;
 
                 }
 
-                return true;
-
             } else {
 
-                sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You Do Not Own A Dog Or It Is Not Registered! (re-login to fix.)");
+                DataPlayer p = PlayerList.players.get(((Player)sender).getUniqueId());
+
+                p.spawnPersonalDog();
+                sender.sendMessage(ChatColor.GREEN + "Your dog has been enabled.");
                 return true;
 
             }
+
+            return true;
 
         }
 

@@ -3,6 +3,7 @@ package com.trxsh.caninesmp.listener;
 import com.trxsh.caninesmp.data.DogList;
 import com.trxsh.caninesmp.data.PlayerList;
 import com.trxsh.caninesmp.player.DataPlayer;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -24,6 +25,13 @@ public class LeaveListener implements Listener {
                 DogList.remove(p.dogUUID);
 
             if(p.getDogEntity() != null) {
+
+                Location l = new Location(p.dogEntity.getWorld(),
+                        p.dogEntity.getLocation().getBlockX(),
+                        p.dogEntity.getLocation().getBlockY(),
+                        p.dogEntity.getLocation().getBlockZ());
+
+                p.lastDogLocation = l;
 
                 p.getDogEntity().remove();
                 p.setDogEntity(null);
@@ -49,6 +57,13 @@ public class LeaveListener implements Listener {
                 DogList.remove(p.dogUUID);
 
             if(p.getDogEntity() != null) {
+
+                Location l = new Location(p.dogEntity.getWorld(),
+                        p.dogEntity.getLocation().getBlockX(),
+                        p.dogEntity.getLocation().getBlockY(),
+                        p.dogEntity.getLocation().getBlockZ());
+
+                p.lastDogLocation = l;
 
                 p.getDogEntity().remove();
                 p.setDogEntity(null);

@@ -2,11 +2,10 @@ package com.trxsh.caninesmp.player;
 
 import com.trxsh.caninesmp.data.DogList;
 import com.trxsh.caninesmp.utility.IdentityUtility;
-import com.trxsh.caninesmp.utility.NameUtility;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
@@ -25,6 +24,10 @@ public class DataPlayer {
     public boolean showStats = false;
 
     public Wolf dogEntity;
+
+    public Location lastDogLocation = null;
+
+    public String lastDimension = null;
 
     public DataPlayer(Player player) {
 
@@ -111,9 +114,17 @@ public class DataPlayer {
 
         Wolf dog = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
 
+        if(lastDogLocation != null) {
+
+            dog.teleport(lastDogLocation);
+            player.sendMessage(ChatColor.GREEN + "Your Dog Was Teleported To It's Last Location At " + (int)lastDogLocation.getX() + ", " + (int)lastDogLocation.getY() + ", " + (int)lastDogLocation.getZ() + " And Is In '" + lastDimension + "'.");
+
+        }
+
         dog.setCustomNameVisible(false);
         dog.setRemoveWhenFarAway(false);
         dog.setCanPickupItems(false);
+        dog.setPersistent(true);
 
         dog.setOwner(player);
         dog.setCustomName(ChatColor.GOLD + "" + ChatColor.BOLD + player.getName() + "'s Dog");

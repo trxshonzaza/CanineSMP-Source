@@ -9,16 +9,19 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
 public class DogStats {
 
-    public static void showDogStats(Player player) {
+    public static void showDogStats(DataPlayer p) {
 
         String dogTitle = "";
 
         try {
+
+            Player player = p.getPlayer();
 
             if(IdentityUtility.dogOwnerExists(player)) {
 
@@ -31,16 +34,35 @@ public class DogStats {
 
                 Location l = w.getLocation();
 
+                p.lastDogLocation = l;
+
                 String dogLocation = (int)l.getX() + ", " + (int)l.getY() + ", " + (int)l.getZ();
+
+                World.Environment et = w.getWorld().getEnvironment();
+
+                p.lastDimension = w.getWorld().getName();
+
+                String dimension = "";
+
+                if(et == World.Environment.NORMAL)
+                    dimension = ChatColor.BLUE + "" + ChatColor.BOLD + "Overworld";
+                else if(et == World.Environment.NETHER)
+                    dimension = ChatColor.RED + "" + ChatColor.BOLD + "Nether";
+                else if(et == World.Environment.THE_END)
+                    dimension = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "The End";
+                else
+                    dimension = "Undefined Dimension";
 
                 dogTitle =
                         ChatColor.WHITE + "" + ChatColor.BOLD + "Health | " + ChatColor.RED + "❤" + health +
                                 ChatColor.WHITE + "" + ChatColor.BOLD + " Air | " + ChatColor.BLUE + "\uD83C\uDF22" + airPockets +
-                                ChatColor.WHITE + "" + ChatColor.BOLD + " Location | " + ChatColor.GREEN + dogLocation;
+                                ChatColor.WHITE + "" + ChatColor.BOLD + " Location | " + ChatColor.GREEN + dogLocation +
+                                ChatColor.WHITE + "" + ChatColor.BOLD + " Dimension | " + dimension;
 
             }
 
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(dogTitle));
+            if(p.showStats)
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(dogTitle));
 
         }catch(Exception ignored){}
 
@@ -52,9 +74,9 @@ public class DogStats {
 
             for(DataPlayer p : PlayerList.players.values()) {
 
-                if(p.isOnline && p.showStats && p.getPlayer() != null && p.dogUUID != null && p.dogEntity != null) {
+                if(p.isOnline && p.getPlayer() != null && p.dogUUID != null && p.dogEntity != null) {
 
-                    showDogStats(p.getPlayer());
+                    showDogStats(p);
 
                 }
 

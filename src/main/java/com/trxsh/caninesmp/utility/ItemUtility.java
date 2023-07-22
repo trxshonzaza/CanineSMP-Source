@@ -11,7 +11,6 @@ import static com.trxsh.caninesmp.data.BanList.banned;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.UUID;
 
 public class ItemUtility {
 
@@ -26,6 +25,7 @@ public class ItemUtility {
         meta.setLore(Collections.singletonList(ChatColor.RED + "Used To Revive Players."));
         meta.addEnchant(Enchantment.DURABILITY, 5, true);
 
+        meta.setCustomModelData(1);
         stack.setItemMeta(meta);
 
         return stack;
@@ -42,6 +42,7 @@ public class ItemUtility {
         meta.setDisplayName(entry.getTarget());
         meta.setLore(Arrays.asList("Banned on " + entry.getCreated(), ChatColor.GREEN + "Click To Revive!"));
 
+        meta.setCustomModelData(2);
         skull.setItemMeta(meta);
 
         return skull;
