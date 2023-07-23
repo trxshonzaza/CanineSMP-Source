@@ -23,7 +23,8 @@ public class BanFileManager extends FileManager {
         StringBuilder sb = new StringBuilder();
 
         for(UUID id : BanList.banned)
-            sb.append(id.toString()).append(NameUtility.getSeparator());
+            sb.append(id.toString())
+                    .append(NameUtility.getSeparator());
 
         writer.write(sb.toString());
         writer.close();

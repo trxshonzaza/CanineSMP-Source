@@ -2,6 +2,7 @@ package com.trxsh.caninesmp.player;
 
 import com.trxsh.caninesmp.data.DogList;
 import com.trxsh.caninesmp.utility.IdentityUtility;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -9,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class DataPlayer {
@@ -25,9 +27,9 @@ public class DataPlayer {
 
     public Wolf dogEntity;
 
-    public Location lastDogLocation = null;
+    public Location lastDogLocation;
 
-    public String lastDimension = null;
+    public String lastDimension;
 
     public DataPlayer(Player player) {
 
@@ -109,15 +111,23 @@ public class DataPlayer {
         if(dogEntity != null)
             dogEntity.remove();
 
-        if(IdentityUtility.dogOwnerExists(player))
-            DogList.remove(IdentityUtility.getDogByPlayer(player));
+        if(IdentityUtility.dogOwnerExists(player)) {
 
-        Wolf dog = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
+            DogList.remove(IdentityUtility.getDogByPlayer(player));
+            Objects.requireNonNull(IdentityUtility.getDogEntityByPlayer(player)).remove();
+
+        }
+
+        Wolf dog;
 
         if(lastDogLocation != null) {
 
-            dog.teleport(lastDogLocation);
-            player.sendMessage(ChatColor.GREEN + "Your Dog Was Teleported To It's Last Location At " + (int)lastDogLocation.getX() + ", " + (int)lastDogLocation.getY() + ", " + (int)lastDogLocation.getZ() + " And Is In '" + lastDimension + "'.");
+            dog = (Wolf) player.getWorld().spawnEntity(lastDogLocation, EntityType.WOLF);
+            player.sendMessage(ChatColor.GREEN + "Your Dog Was Teleported To It's Last Known Location. Please Use /locatedog Or /dogstats To Get Information On Your Dog's Location.");
+
+        } else {
+
+            dog = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
 
         }
 
@@ -131,6 +141,12 @@ public class DataPlayer {
 
         this.dogEntity = dog;
         this.dogUUID = dog.getUniqueId();
+
+        lastDogLocation = dog.getLocation();
+        lastDimension = dog.getWorld().getName();
+
+        Bukkit.getLogger().info("lastDogLocation: " + lastDogLocation);
+        Bukkit.getLogger().info("lastDimension: " + lastDimension);
 
         DogList.add(dog.getUniqueId(), player.getUniqueId());
 

@@ -27,18 +27,30 @@ public class DogLocationFileManager extends FileManager {
         FileWriter writer = new FileWriter(file);
         StringBuilder sb = new StringBuilder();
 
-        for(UUID id : PlayerList.players.keySet()) {
+        for(DataPlayer player : PlayerList.players.values()) {
 
-            Location dogLocation = PlayerList.players.get(id).lastDogLocation;
-            String dimension = PlayerList.players.get(id).lastDimension;
+            Bukkit.getLogger().info("Player: " + player.name);
+            Bukkit.getLogger().info("Dog Location: " + player.lastDogLocation);
+            Bukkit.getLogger().info("Dimension: " + player.lastDimension);
 
-            sb.append(id)
+            if (player.lastDogLocation == null) {
+
+                Bukkit.getLogger().warning("Skipping player " + player.name + " due to null lastDogLocation");
+
+                continue;
+
+            }
+
+            Location dogLocation = player.lastDogLocation;
+            String dimension = player.lastDimension;
+
+            sb.append(player.playerUUID)
                     .append("::")
-                    .append(dogLocation.getX())
+                    .append((int)dogLocation.getX())
                     .append("==")
-                    .append(dogLocation.getY())
+                    .append((int)dogLocation.getY())
                     .append("=!")
-                    .append(dogLocation.getZ())
+                    .append((int)dogLocation.getZ())
                     .append("!=")
                     .append(dimension)
                     .append(NameUtility.getSeparator());
@@ -55,24 +67,62 @@ public class DogLocationFileManager extends FileManager {
 
         for(String line : Files.readAllLines(file.toPath())) {
 
-            UUID playerID = UUID.fromString(line.split("::")[0]);
+            String[] data = line.split("::");
+            if (data.length != 2) {
 
-            double x = Double.parseDouble(line.split("==")[0].split("::")[1]);
-            double y = Double.parseDouble(line.split("=!")[0].split("==")[1]);
-            double z = Double.parseDouble(line.split("!=")[0].split("!=")[1]);
+                Bukkit.getLogger().warning("Invalid data format in line: " + line);
 
-            World world = Bukkit.getWorld(line.split("!=")[1]);
+                continue;
+
+            }
+
+            UUID playerID = UUID.fromString(data[0]);
+
+            String locationData = data[1];
+
+            String[] locationInfo = locationData.split("==|=!|!=");
+
+            if (locationInfo.length != 4) {
+
+                Bukkit.getLogger().warning("Invalid location data format in line: " + line);
+
+                continue;
+
+            }
+
+            double x = Double.parseDouble(locationInfo[0]);
+            double y = Double.parseDouble(locationInfo[1]);
+            double z = Double.parseDouble(locationInfo[2]);
+
+            String worldName = locationInfo[3];
+
+            World world = Bukkit.getWorld(worldName);
+
+            if (world == null) {
+
+                Bukkit.getLogger().warning("Invalid world name in line: " + line);
+
+                continue;
+
+            }
 
             Location l = new Location(world, x, y, z);
 
             DataPlayer player = PlayerList.players.get(playerID);
 
-            player.lastDogLocation = l;
+            if (player == null) {
 
-            assert world != null;
+                Bukkit.getLogger().warning("Player with UUID " + playerID + " not found");
+
+                continue;
+
+            }
+
+            player.lastDogLocation = l;
             player.lastDimension = world.getName();
 
         }
 
     }
+
 }

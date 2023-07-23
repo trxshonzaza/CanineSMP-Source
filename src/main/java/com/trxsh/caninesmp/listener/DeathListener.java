@@ -36,7 +36,6 @@ public class DeathListener implements Listener {
                 player.lastDogLocation = null;
                 player.lastDimension = null;
 
-
                 assert p != null;
                 BanUtility.ban(p.getUniqueId());
 

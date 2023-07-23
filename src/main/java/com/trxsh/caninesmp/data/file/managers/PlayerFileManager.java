@@ -27,7 +27,8 @@ public class PlayerFileManager extends FileManager {
         StringBuilder sb = new StringBuilder();
 
         for(UUID id : PlayerList.players.keySet())
-            sb.append(id.toString()).append(NameUtility.getSeparator());
+            sb.append(id.toString())
+                    .append(NameUtility.getSeparator());
 
         writer.write(sb.toString());
         writer.close();

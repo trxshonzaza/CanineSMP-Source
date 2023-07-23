@@ -5,7 +5,6 @@ import com.trxsh.caninesmp.command.operator.GiveReviveToken;
 import com.trxsh.caninesmp.command.operator.ToggleDog;
 import com.trxsh.caninesmp.command.operator.ToggleDogAttack;
 import com.trxsh.caninesmp.command.operator.UnbanPlayer;
-import com.trxsh.caninesmp.crafting.CraftingRecipes;
 import com.trxsh.caninesmp.data.PlayerList;
 import com.trxsh.caninesmp.data.file.FileManager;
 import com.trxsh.caninesmp.data.file.managers.BanFileManager;
@@ -16,12 +15,15 @@ import com.trxsh.caninesmp.player.DataPlayer;
 import com.trxsh.caninesmp.stat.DogStats;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 
-public final class Main extends JavaPlugin {
+public final class Main extends JavaPlugin implements Listener {
 
     public static Main Instance = null;
 
@@ -42,6 +44,7 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new InteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(this, this);
 
         Bukkit.getPluginCommand("locatedog").setExecutor(new DogLocation());
         Bukkit.getPluginCommand("teleportdog").setExecutor(new DogTeleport());
@@ -102,8 +105,6 @@ public final class Main extends JavaPlugin {
 
         Instance = this;
 
-        CraftingRecipes.add();
-
         DogStats.start();
 
         Bukkit.getLogger().info("Enabled Plugin (prod trxsh 2.0#1988)");
@@ -113,37 +114,47 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
 
-        Bukkit.getLogger().info("Disabling Plugin (prod trxsh 2.0#1988)");
+        // data is handled in onPluginDisable()
 
-        try {
+    }
 
-            Bukkit.getLogger().info("Saving Data (prod trxsh 2.0#1988)");
+    @EventHandler
+    public void onPluginDisable(PluginDisableEvent e) {
 
-            p = new PlayerFileManager(new File("players.sav"));
-            b = new BanFileManager(new File("banned.sav"));
-            dl = new DogLocationFileManager(new File("doglocation.sav"));
+        if(e.getPlugin() == this) {
 
-            b.save();
-            p.save();
-            dl.save();
+            Bukkit.getLogger().info("Disabling Plugin (prod trxsh 2.0#1988)");
 
-            Bukkit.getLogger().info("Saved! (prod trxsh 2.0#1988)");
+            try {
 
-        } catch (IOException e) {
+                Bukkit.getLogger().info("Saving Data (prod trxsh 2.0#1988)");
 
-            Bukkit.getLogger().warning("failed to save file");
+                p = new PlayerFileManager(new File("players.sav"));
+                b = new BanFileManager(new File("banned.sav"));
+                dl = new DogLocationFileManager(new File("doglocation.sav"));
 
-            e.printStackTrace();
+                b.save();
+                p.save();
+                dl.save();
+
+                Bukkit.getLogger().info("Saved! (prod trxsh 2.0#1988)");
+
+            } catch (IOException err) {
+
+                Bukkit.getLogger().warning("failed to save file");
+
+                err.printStackTrace();
+
+            }
+
+            for(DataPlayer p : PlayerList.players.values())
+                if(p.getDogEntity() != null)
+                    p.getDogEntity().remove();
+
+            Bukkit.getLogger().info("Disabled Plugin (prod trxsh 2.0#1988)");
 
         }
 
-        for(DataPlayer p : PlayerList.players.values())
-            if(p.getDogEntity() != null)
-                p.getDogEntity().remove();
-
-        CraftingRecipes.remove();
-
-        Bukkit.getLogger().info("Disabled Plugin (prod trxsh 2.0#1988)");
-
     }
+
 }

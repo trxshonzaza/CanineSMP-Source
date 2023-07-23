@@ -3,6 +3,7 @@ package com.trxsh.caninesmp.listener;
 import com.trxsh.caninesmp.data.DogList;
 import com.trxsh.caninesmp.data.PlayerList;
 import com.trxsh.caninesmp.player.DataPlayer;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,9 +34,40 @@ public class LeaveListener implements Listener {
 
                 p.lastDogLocation = l;
 
+                Chunk c = p.getDogEntity().getLocation().getChunk();
+
+                if(!c.isLoaded())
+                    c.load();
+
                 p.getDogEntity().remove();
                 p.setDogEntity(null);
                 p.dogUUID = null;
+
+                c.unload();
+
+            } else {
+
+                Chunk c = p.lastDogLocation.getChunk();
+
+                if(!c.isLoaded())
+                    c.load();
+
+                if(p.getDogEntity() != null) {
+
+                    Location l = new Location(p.dogEntity.getWorld(),
+                            p.dogEntity.getLocation().getBlockX(),
+                            p.dogEntity.getLocation().getBlockY(),
+                            p.dogEntity.getLocation().getBlockZ());
+
+                    p.lastDogLocation = l;
+
+                    p.getDogEntity().remove();
+                    p.setDogEntity(null);
+                    p.dogUUID = null;
+
+                }
+
+                c.unload();
 
             }
 
@@ -65,9 +97,40 @@ public class LeaveListener implements Listener {
 
                 p.lastDogLocation = l;
 
+                Chunk c = p.getDogEntity().getLocation().getChunk();
+
+                if(!c.isLoaded())
+                    c.load();
+
                 p.getDogEntity().remove();
                 p.setDogEntity(null);
                 p.dogUUID = null;
+
+                c.unload();
+
+            } else {
+
+                Chunk c = p.lastDogLocation.getChunk();
+
+                if (!c.isLoaded())
+                    c.load();
+
+                if (p.getDogEntity() != null) {
+
+                    Location l = new Location(p.dogEntity.getWorld(),
+                            p.dogEntity.getLocation().getBlockX(),
+                            p.dogEntity.getLocation().getBlockY(),
+                            p.dogEntity.getLocation().getBlockZ());
+
+                    p.lastDogLocation = l;
+
+                    p.getDogEntity().remove();
+                    p.setDogEntity(null);
+                    p.dogUUID = null;
+
+                }
+
+                c.unload();
 
             }
 
